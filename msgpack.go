@@ -22,19 +22,7 @@ type UchatMessage struct {
 	ShareTitle       string
 	ShareDesc        string
 	ShareUrl         string
-	ExtraData        UchatMessageExtraData //补充数据，并非接口返回
-}
-
-type UchatMessageExtraData struct {
-	RobotSerialNo    string
-	RobotNickName    string
-	ChatRoomName     string
-	WxUserNickName   string
-	WxUserHeadImages string
-}
-
-func FetchUchatMessageExtraData([]*UchatMessage) error {
-	return nil
+	ExtraData        interface{} //补充数据，并非接口返回
 }
 
 func ConvertUchatMessage(b []byte) ([]*UchatMessage, error) {
