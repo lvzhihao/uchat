@@ -86,3 +86,40 @@ func ConvertUchatMessageToMsgpack(b []byte) ([][]byte, error) {
 	}
 	return ret, nil
 }
+
+// keyword msgpack
+type UchatKeyword struct {
+	LogSerialNo        string
+	ChatRoomSerialNo   string
+	FromWxUserSerialNo string
+	ToWxUserSerialNo   string
+	Content            string
+}
+
+func ConvertUchatKeyword(b []byte) ([]*UchatKeyword, error) {
+	var rst map[string]interface{}
+	err := json.Unmarshal(b, &rst)
+	if err != nil {
+		return nil, err
+	}
+	data, ok := rst["Data"]
+	if !ok {
+		return nil, errors.New("empty Data")
+	}
+	var list []map[string]interface{}
+	err = json.Unmarshal([]byte(goutils.ToString(data)), &list)
+	if err != nil {
+		return nil, err
+	}
+	ret := make([]*UchatKeyword, 0)
+	for _, v := range list {
+		key := &UchatKeyword{}
+		key.LogSerialNo = goutils.ToString(v["vcSerialNo"])
+		key.ChatRoomSerialNo = goutils.ToString(v["vcChatRoomSerialNo"])
+		key.FromWxUserSerialNo = goutils.ToString(v["vcFromWxUserSerialNo"])
+		key.ToWxUserSerialNo = goutils.ToString(v["vcToWxUserSerialNo"])
+		key.Content = goutils.ToString(v["vcContent"])
+		ret = append(ret, key)
+	}
+	return ret, nil
+}
