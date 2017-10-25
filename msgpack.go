@@ -94,6 +94,7 @@ type UchatKeyword struct {
 	FromWxUserSerialNo string
 	ToWxUserSerialNo   string
 	Content            string
+	ExtraData          interface{} //补充数据，并非接口返回
 }
 
 func ConvertUchatKeyword(b []byte) ([]*UchatKeyword, error) {
