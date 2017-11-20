@@ -40,5 +40,5 @@ func ApplyChatRoomKicking(robotSerialNo, wxUserSerialNo, comment string, client 
 	ctx["vcChatRoomSerialNo"] = robotSerialNo
 	ctx["vcWxUserSerialNo"] = wxUserSerialNo
 	ctx["vcComment"] = comment
-	return client.ChatRoomKicking(ctx)
+	return client.ChatRoomKicking([]map[string]string{ctx})
 }
