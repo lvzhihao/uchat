@@ -35,7 +35,7 @@ func ApplyRobotAddUser(robotSerialNo, userWexinId string, client *UchatClient) e
 	return client.RobotAddUser(ctx)
 }
 
-func ApplyChatRoomKicking(robotSerialNo, wxUserSerialNo, comment string) error {
+func ApplyChatRoomKicking(robotSerialNo, wxUserSerialNo, comment string, client *UchatClient) error {
 	ctx := make(map[string]string, 0)
 	ctx["vcChatRoomSerialNo"] = robotSerialNo
 	ctx["vcWxUserSerialNo"] = wxUserSerialNo
