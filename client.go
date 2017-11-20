@@ -44,7 +44,7 @@ type UchatClient struct {
 type UchatClientResult struct {
 	Result string        `json:"nResult"`
 	Error  string        `json:"vcResult"`
-	Data   []interface{} `json:"data"`
+	Data   []interface{} `json:"Data"`
 }
 
 /*
