@@ -333,7 +333,7 @@ func (c *UchatClient) MerchantCmd(ctx map[string]interface{}) error {
 }
 
 // 获取群二维码
-func (c *UchatClient) GetQrCode(ctx map[string]interface{}) error {
+func (c *UchatClient) GetQrCode(ctx map[string]string) error {
 	_, err := c.Action("GetQrCode", ctx)
 	return err
 }

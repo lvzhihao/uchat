@@ -43,3 +43,9 @@ func ApplyChatRoomKicking(relationSerialNo, robotSerialNo, wxUserSerialNo, comme
 	ctx["vcComment"] = comment
 	return client.ChatRoomKicking(map[string]interface{}{"Data": []map[string]string{ctx}})
 }
+
+func ApplyChatRoomQrCode(chatRoomSerialNo string, client *UchatClient) error {
+	ctx := make(map[string]string, 0)
+	ctx["vcChatRoomSerialNo"] = chatRoomSerialNo
+	return client.GetQrCode(ctx)
+}
