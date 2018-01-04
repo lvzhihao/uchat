@@ -112,6 +112,7 @@ func ConvertUchatKeyword(b []byte) ([]*UchatKeyword, error) {
 }
 
 // MemberJoin model
+// todo add more chatroom info
 type UchatMemberJoin struct {
 	MerchantNo           string
 	ChatRoomSerialNo     string
@@ -171,6 +172,8 @@ type UchatMemberQuit struct {
 	MerchantNo       string
 	ChatRoomSerialNo string
 	WxUserSerialNo   string
+	WxId             string
+	NickName         string
 	QuitDate         time.Time
 	ExtraData        interface{} //补充数据，并非接口返回
 }
@@ -200,6 +203,8 @@ func ConvertUchatMemberQuit(b []byte) ([]*UchatMemberQuit, error) {
 		key.MerchantNo = goutils.ToString(merchantNo)
 		key.ChatRoomSerialNo = goutils.ToString(v["vcChatRoomSerialNo"])
 		key.WxUserSerialNo = goutils.ToString(v["vcWxUserSerialNo"])
+		key.WxId = goutils.ToString(v["vcWxId"])
+		key.NickName = goutils.ToString(v["vcNickName"])
 		key.QuitDate, _ = time.ParseInLocation("2006-01-02T15:04:05", goutils.ToString(v["dtCreateDate"]), UchatTimeLocation)
 		ret = append(ret, key)
 	}
