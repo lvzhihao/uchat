@@ -165,3 +165,43 @@ func ConvertUchatMemberJoin(b []byte) ([]*UchatMemberJoin, error) {
 	}
 	return ret, nil
 }
+
+// MemberQuit model
+type UchatMemberQuit struct {
+	MerchantNo       string
+	ChatRoomSerialNo string
+	WxUserSerialNo   string
+	QuitDate         time.Time
+	ExtraData        interface{} //补充数据，并非接口返回
+}
+
+func ConvertUchatMemberQuit(b []byte) ([]*UchatMemberQuit, error) {
+	var rst map[string]interface{}
+	err := json.Unmarshal(b, &rst)
+	if err != nil {
+		return nil, err
+	}
+	merchantNo, ok := rst["vcMerchantNo"]
+	if !ok {
+		return nil, errors.New("empty merchantNo")
+	}
+	data, ok := rst["Data"]
+	if !ok {
+		return nil, errors.New("empty Data")
+	}
+	var list []map[string]interface{}
+	err = json.Unmarshal([]byte(goutils.ToString(data)), &list)
+	if err != nil {
+		return nil, err
+	}
+	ret := make([]*UchatMemberQuit, 0)
+	for _, v := range list {
+		key := &UchatMemberQuit{}
+		key.MerchantNo = goutils.ToString(merchantNo)
+		key.ChatRoomSerialNo = goutils.ToString(v["vcChatRoomSerialNo"])
+		key.WxUserSerialNo = goutils.ToString(v["vcWxUserSerialNo"])
+		key.QuitDate, _ = time.ParseInLocation("2006-01-02T15:04:05", goutils.ToString(v["dtCreateDate"]), UchatTimeLocation)
+		ret = append(ret, key)
+	}
+	return ret, nil
+}
