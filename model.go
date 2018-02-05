@@ -26,27 +26,27 @@ func GetInt32(v map[string]interface{}, key string) int32 {
 }
 
 type UchatMessage struct {
-	MerchantNo       string
-	MsgId            string
-	LogSerialNo      string
-	RobotSerialNo    string
-	RobotWxId        string
-	ChatRoomSerialNo string
-	ChatRoomId       string
-	WxUserSerialNo   string
-	WeixinId         string
-	ToWxUserSerialNo string
-	ToWeixinId       string
-	MsgTime          time.Time
-	MsgType          int32
-	Content          string
-	VoiceTime        int32
-	ShareTitle       string
-	ShareDesc        string
-	ShareUrl         string
-	AppId            string
-	PlatformMsgType  int32
-	IsHit            int32
+	MerchantNo       string      // 商户号
+	MsgId            string      //【微信】消息ID
+	LogSerialNo      string      // [开放平台]消息SN
+	RobotSerialNo    string      // 设备号
+	RobotWxId        string      // 设备微信ID
+	ChatRoomSerialNo string      // 群号
+	ChatRoomId       string      // 群微信ID
+	WxUserSerialNo   string      // 发送人号
+	WeixinId         string      // 发送人微信ID
+	ToWxUserSerialNo string      // 被@用户号
+	ToWeixinId       string      // 被@用户微信ID
+	MsgTime          time.Time   // 发送时间
+	MsgType          int32       // 消息类型 2001 文字 2002 图片 2003 语音 2004 视频 2005 链接 2006 名片 2007 动态表情 2013 小程序
+	Content          string      // 文字、图文链接、名片、小程序(会进行Base64编码)；图片、语音、视频、动态表情(不经过Base64编码)
+	VoiceTime        int32       // 语音时长
+	ShareTitle       string      // 链接标题(或小程序名称)不经过Base64编码
+	ShareDesc        string      // 链接描述(或小程序icon链接)不经过Base64编码
+	ShareUrl         string      // 链接URL(或小程序图片链接)不经过Base64编码
+	AppId            string      // 私聊信息里有，未知
+	PlatformMsgType  int32       // 区别用户发言还是机器人发言，10：普通人 12：机器人
+	IsHit            int32       // 是否艾特所有人 (0 艾特群内所有人 1 艾特单个人或者不艾特人)
 	ExtraData        interface{} //补充数据，并非接口返回
 }
 
