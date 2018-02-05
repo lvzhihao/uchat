@@ -9,11 +9,32 @@ import (
 	"github.com/lvzhihao/goutils"
 )
 
+func GetKey(v map[string]interface{}, key string) interface{} {
+	if data, ok := v[key]; ok {
+		return data
+	} else {
+		return nil
+	}
+}
+
+func GetString(v map[string]interface{}, key string) string {
+	return goutils.ToString(GetKey(v, key))
+}
+
+func GetInt32(v map[string]interface{}, key string) int32 {
+	return goutils.ToInt32(GetKey(v, key))
+}
+
 type UchatMessage struct {
 	MerchantNo       string
+	MsgId            string
 	LogSerialNo      string
+	RobotSerialNo    string
+	RobotWxId        string
 	ChatRoomSerialNo string
+	ChatRoomId       string
 	WxUserSerialNo   string
+	WeixinId         string
 	MsgTime          time.Time
 	MsgType          int32
 	Content          string
@@ -21,6 +42,7 @@ type UchatMessage struct {
 	ShareTitle       string
 	ShareDesc        string
 	ShareUrl         string
+	AppId            string
 	ExtraData        interface{} //补充数据，并非接口返回
 }
 
@@ -47,21 +69,27 @@ func ConvertUchatMessage(b []byte) ([]*UchatMessage, error) {
 	for _, v := range list {
 		msg := &UchatMessage{}
 		msg.MerchantNo = goutils.ToString(merchantNo)
-		msg.LogSerialNo = goutils.ToString(v["vcSerialNo"])
-		msg.ChatRoomSerialNo = goutils.ToString(v["vcChatRoomSerialNo"])
-		msg.WxUserSerialNo = goutils.ToString(v["vcFromWxUserSerialNo"])
-		msg.MsgTime, _ = time.ParseInLocation("2006-01-02 15:04:05", goutils.ToString(v["dtMsgTime"]), UchatTimeLocation)
-		msg.MsgType = goutils.ToInt32(v["nMsgType"])
-		content, err := base64.StdEncoding.DecodeString(goutils.ToString(v["vcContent"]))
+		msg.MsgId = GetString(v, "vcMsgId")
+		msg.LogSerialNo = GetString(v, "vcSerialNo")
+		msg.RobotSerialNo = GetString(v, "vcRobotSerialNo")
+		msg.RobotWxId = GetString(v, "vcRobotWxId")
+		msg.ChatRoomSerialNo = GetString(v, "vcChatRoomSerialNo")
+		msg.ChatRoomId = GetString(v, "vcChatRoomId")
+		msg.WxUserSerialNo = GetString(v, "vcFromWxUserSerialNo")
+		msg.WeixinId = GetString(v, "vcFromWeixinId")
+		msg.MsgTime, _ = time.ParseInLocation("2006-01-02 15:04:05", GetString(v, "dtMsgTime"), UchatTimeLocation)
+		msg.MsgType = GetInt32(v, "nMsgType")
+		content, err := base64.StdEncoding.DecodeString(GetString(v, "vcContent"))
 		if err != nil {
-			msg.Content = goutils.ToString(v["vcContent"])
+			msg.Content = GetString(v, "vcContent")
 		} else {
 			msg.Content = goutils.ToString(content)
 		}
-		msg.VoiceTime = goutils.ToInt32(v["nVoiceTime"])
-		msg.ShareTitle = goutils.ToString(v["vcShareTitle"])
-		msg.ShareDesc = goutils.ToString(v["vcShareDesc"])
-		msg.ShareUrl = goutils.ToString(v["vcShareUrl"])
+		msg.VoiceTime = GetInt32(v, "nVoiceTime")
+		msg.ShareTitle = GetString(v, "vcShareTitle")
+		msg.ShareDesc = GetString(v, "vcShareDesc")
+		msg.ShareUrl = GetString(v, "vcShareUrl")
+		msg.AppId = GetString(v, "vcAppId")
 		ret = append(ret, msg)
 	}
 	return ret, nil
