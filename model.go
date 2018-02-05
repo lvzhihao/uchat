@@ -35,6 +35,8 @@ type UchatMessage struct {
 	ChatRoomId       string
 	WxUserSerialNo   string
 	WeixinId         string
+	ToWxUserSerialNo string
+	ToWeixinId       string
 	MsgTime          time.Time
 	MsgType          int32
 	Content          string
@@ -43,6 +45,8 @@ type UchatMessage struct {
 	ShareDesc        string
 	ShareUrl         string
 	AppId            string
+	PlatformMsgType  int32
+	IsHit            int32
 	ExtraData        interface{} //补充数据，并非接口返回
 }
 
@@ -77,6 +81,8 @@ func ConvertUchatMessage(b []byte) ([]*UchatMessage, error) {
 		msg.ChatRoomId = GetString(v, "vcChatRoomId")
 		msg.WxUserSerialNo = GetString(v, "vcFromWxUserSerialNo")
 		msg.WeixinId = GetString(v, "vcFromWeixinId")
+		msg.ToWxUserSerialNo = GetString(v, "vcToWxUserSerialNo")
+		msg.ToWeixinId = GetString(v, "vcToWxId")
 		msg.MsgTime, _ = time.ParseInLocation("2006-01-02 15:04:05", GetString(v, "dtMsgTime"), UchatTimeLocation)
 		msg.MsgType = GetInt32(v, "nMsgType")
 		content, err := base64.StdEncoding.DecodeString(GetString(v, "vcContent"))
@@ -90,6 +96,8 @@ func ConvertUchatMessage(b []byte) ([]*UchatMessage, error) {
 		msg.ShareDesc = GetString(v, "vcShareDesc")
 		msg.ShareUrl = GetString(v, "vcShareUrl")
 		msg.AppId = GetString(v, "vcAppId")
+		msg.PlatformMsgType = GetInt32(v, "nPlatformMsgType")
+		msg.IsHit = GetInt32(v, "nIsHit")
 		ret = append(ret, msg)
 	}
 	return ret, nil
