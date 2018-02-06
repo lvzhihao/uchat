@@ -295,7 +295,7 @@ func ConverUchatRobotChatJoin(b []byte) ([]*UchatRobotChatJoin, error) {
 		key.WxUserNickName = GetString(v, "vcNickName")
 		key.WxUserBase64NickName = GetString(v, "vcBase64NickName")
 		key.WxUserHeadImgUrl = GetString(v, "vcHeadImgUrl")
-		key.JoinDate, _ = time.ParseInLocation("2006-01-02T15:04:05", GetString(v, "dtCreateDate"), UchatTimeLocation)
+		key.JoinDate, _ = time.ParseInLocation("2006-01-02 15:04:05", GetString(v, "dtCreateDate"), UchatTimeLocation)
 		ret = append(ret, key)
 	}
 	return ret, nil
