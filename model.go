@@ -246,3 +246,57 @@ func ConvertUchatMemberQuit(b []byte) ([]*UchatMemberQuit, error) {
 	}
 	return ret, nil
 }
+
+// 机器人入群model
+type UchatRobotChatJoin struct {
+	MerchantNo             string
+	LogSerialNo            string
+	RobotSerialNo          string
+	ChatRoomSerialNo       string
+	ChatRoomNickName       string
+	ChatRoomBase64NickName string
+	WxUserSerialNo         string
+	WxUserNickName         string
+	WxUserBase64NickName   string
+	WxUserHeadImgUrl       string
+	JoinDate               time.Time
+	ExtraData              interface{} //补充数据，并非接口返回
+}
+
+func ConverUchatRobotChatJoin(b []byte) ([]*UchatRobotChatJoin, error) {
+	var rst map[string]interface{}
+	err := json.Unmarshal(b, &rst)
+	if err != nil {
+		return nil, err
+	}
+	merchantNo, ok := rst["vcMerchantNo"]
+	if !ok {
+		return nil, errors.New("empty merchantNo")
+	}
+	data, ok := rst["Data"]
+	if !ok {
+		return nil, errors.New("empty Data")
+	}
+	var list []map[string]interface{}
+	err = json.Unmarshal([]byte(goutils.ToString(data)), &list)
+	if err != nil {
+		return nil, err
+	}
+	ret := make([]*UchatRobotChatJoin, 0)
+	for _, v := range list {
+		key := &UchatRobotChatJoin{}
+		key.MerchantNo = goutils.ToString(merchantNo)
+		key.LogSerialNo = GetString(v, "vcSerialNo")
+		key.RobotSerialNo = GetString(v, "vcRobotSerialNo")
+		key.ChatRoomSerialNo = GetString(v, "vcChatRoomSerialNo")
+		key.ChatRoomNickName = GetString(v, "vcName")
+		key.ChatRoomBase64NickName = GetString(v, "vcBase64Name")
+		key.WxUserSerialNo = GetString(v, "vcWxUserSerialNo")
+		key.WxUserNickName = GetString(v, "vcNickName")
+		key.WxUserBase64NickName = GetString(v, "vcBase64NickName")
+		key.WxUserHeadImgUrl = GetString(v, "vcHeadImgUrl")
+		key.JoinDate, _ = time.ParseInLocation("2006-01-02T15:04:05", GetString(v, "dtCreateDate"), UchatTimeLocation)
+		ret = append(ret, key)
+	}
+	return ret, nil
+}
