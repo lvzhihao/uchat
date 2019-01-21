@@ -9,7 +9,7 @@ import (
 
 var (
 	testClient    *UchatClient
-	testRobot     map[string]string
+	testRobot     map[string]interface{}
 	testChatRooms []map[string]string
 
 	testMarchantNo      string
@@ -43,7 +43,7 @@ func Test_001_RobotList(t *testing.T) {
 
 func Test_002_ApplyCodeList(t *testing.T) {
 	ctx := make(map[string]string, 0)
-	ctx["vcRobotSerialNo"] = testRobot["vcSerialNo"]
+	ctx["vcRobotSerialNo"] = goutils.ToString(testRobot["vcSerialNo"])
 	ctx["nType"] = "10"
 	ctx["vcChatRoomSerialNo"] = ""
 	ctx["nCodeCount"] = "2"
@@ -60,7 +60,7 @@ func Test_002_ApplyCodeList(t *testing.T) {
 
 func Test_003_ChatRoomList(t *testing.T) {
 	ctx := make(map[string]string, 0)
-	ctx["vcRobotSerialNo"] = testRobot["vcSerialNo"]
+	ctx["vcRobotSerialNo"] = goutils.ToString(testRobot["vcSerialNo"])
 	rst, err := testClient.ChatRoomList(ctx)
 	if err != nil {
 		t.Error(err)
@@ -79,9 +79,9 @@ func Test_004_ChatRoomStatus(t *testing.T) {
 			t.Error(err)
 		} else {
 			t.Log(data)
-			testChatRooms[k]["nRobotInStatus"] = data["nRobotInStatus"]
-			testChatRooms[k]["nRobotStatus"] = data["nRobotStatus"]
-			testChatRooms[k]["nStatus"] = data["nStatus"]
+			testChatRooms[k]["nRobotInStatus"] = goutils.ToString(data["nRobotInStatus"])
+			testChatRooms[k]["nRobotStatus"] = goutils.ToString(data["nRobotStatus"])
+			testChatRooms[k]["nStatus"] = goutils.ToString(data["nStatus"])
 			t.Log("success")
 		}
 	}
