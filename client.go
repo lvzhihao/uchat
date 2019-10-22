@@ -18,9 +18,10 @@ import (
 )
 
 var (
-	UchatApiPrefix                     string         = "http://skyagent.shequnguanjia.com/Merchant.asmx" //接口地址
-	UchatTimeZone                      string         = "Asia/Shanghai"                                   //时区设置
-	UchatTimeLocation                  *time.Location                                                     //当前时区
+	//UchatApiPrefix                     string         = "http://skyagent.shequnguanjia.com/Merchant.asmx" //接口地址
+	UchatApiPrefix                     string         = "https://skyagent.evmai.cn:8081/Merchant.asmx" //接口地址
+	UchatTimeZone                      string         = "Asia/Shanghai"                                //时区设置
+	UchatTimeLocation                  *time.Location                                                  //当前时区
 	DefaultTransportInsecureSkipVerify bool           = true
 	DefaultTransportDisableCompression bool           = true
 )
